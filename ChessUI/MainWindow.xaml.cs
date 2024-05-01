@@ -27,6 +27,7 @@ namespace ChessUI
 
             gameState = new GameState(Player.White, Board.InitialBoardState());
             DrawBoard(gameState.Board);
+            SetCursor(gameState.CurrentPlayer);
         }
   
 
@@ -103,6 +104,7 @@ namespace ChessUI
         {
             gameState.MakeMove(move);
             DrawBoard(gameState.Board);
+            SetCursor(gameState.CurrentPlayer);
         }
 
         // Convert point coords(px) to Square coords
@@ -140,6 +142,18 @@ namespace ChessUI
             foreach(Position to in moveChache.Keys)
             {
                 highlights[to.Row, to.Column].Fill = Brushes.Transparent;
+            }
+        }
+
+        private void SetCursor(Player player)
+        {
+            if(player == Player.White)
+            {
+                Cursor = ChessCursors.WhiteCursor;
+            }
+            else
+            {
+                Cursor = ChessCursors.BlackCursor;
             }
         }
     }
