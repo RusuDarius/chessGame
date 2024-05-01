@@ -1,4 +1,3 @@
-
 namespace ChessLogic
 {
     public class Pawn : Piece
