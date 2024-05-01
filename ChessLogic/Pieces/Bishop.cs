@@ -1,9 +1,18 @@
+
 namespace ChessLogic
 {
     public class Bishop : Piece
     {
         public override PieceType Type => PieceType.Bishop;
         public override Player Color { get; }
+
+        private static readonly Direction[] dirs = new Direction[]
+        {
+            Direction.NorthWest,
+            Direction.NorthEast,
+            Direction.SouthEast,
+            Direction.SouthWest,
+        };
 
         public Bishop(Player color)
         {
@@ -15,6 +24,11 @@ namespace ChessLogic
             Bishop copy = new Bishop(Color);
             copy.HasMoved = HasMoved;
             return copy;
+        }
+
+        public override IEnumerable<Move> GetMoves( Position fromPos, Board board )
+        {
+            return MovePositioninDirs(fromPos, board, dirs).Select(to => new NormalMove(fromPos, to));
         }
     }
 }

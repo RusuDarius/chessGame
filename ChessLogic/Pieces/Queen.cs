@@ -1,3 +1,4 @@
+
 namespace ChessLogic
 {
     public class Queen : Piece
@@ -5,6 +6,18 @@ namespace ChessLogic
         public override PieceType Type => PieceType.Queen;
 
         public override Player Color { get; }
+
+        private static readonly Direction[] dirs = new Direction[]
+        {
+            Direction.North,
+            Direction.South,
+            Direction.East,
+            Direction.West,
+            Direction.NorthEast,
+            Direction.SouthEast,
+            Direction.West,
+            Direction.NorthWest,
+        };
 
         public Queen(Player color)
         {
@@ -16,6 +29,11 @@ namespace ChessLogic
             Queen copy = new Queen(Color);
             copy.HasMoved = HasMoved;
             return copy;
+        }
+
+        public override IEnumerable<Move> GetMoves( Position fromPos, Board board )
+        {
+            return MovePositioninDirs(fromPos, board, dirs).Select(to => new NormalMove(fromPos, to));
         }
     }
 }
