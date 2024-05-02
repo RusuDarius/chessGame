@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChessUI"
         mc:Ignorable="d"
-        Title="Chess" SizeToContent="Height" Width="600"
+        Title="ChessGame" SizeToContent="Height" Width="600"
         Icon="Assets/icon.ico"
         WindowStartupLocation="CenterScreen"
         Background="#101010">
@@ -30,7 +30,7 @@
                          Columns="8"
                          RenderOptions.BitmapScalingMode="HighQuality">
             </UniformGrid>
-    </Grid>
+        </Grid>
     </Viewbox>
     
 </Window>
