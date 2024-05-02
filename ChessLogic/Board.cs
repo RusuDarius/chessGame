@@ -93,5 +93,19 @@ namespace ChessLogic
                 return piece.CanCaptureOpponentKing(pos, this);
             });
         }
+
+        // Used for filtering the moves that leave the king in check (illegal)
+        // Creates a copy of the board where the move will be made to check if it's legal(allied king not in check after it)
+        public Board Copy()
+        {
+            Board copy = new Board();
+            
+            foreach(Position pos in PiecePositions())
+            {
+                copy[pos] = this[pos].Copy();
+            }
+
+            return copy;
+        }
     }
 }
