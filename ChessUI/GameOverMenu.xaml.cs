@@ -26,7 +26,7 @@ namespace ChessUI
             {
                 Player.White => "White won!",
                 Player.Black => "Black won!",
-                _ => "Draw!",
+                _ => "Draw",
             };
         }
 
