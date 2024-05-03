@@ -42,21 +42,42 @@ namespace ChessLogic
             return board[pos].Color != Color;
         }
 
-        public IEnumerable<Move> ForwardMoves(Position fromPos, Board board)
+        // Creates 4 promotion moves
+        private static IEnumerable<Move> PromotionMoves(Position from, Position to)
+        {
+            yield return new PawnPromotion(from, to, PieceType.Knight);
+            yield return new PawnPromotion(from, to, PieceType.Bishop);
+            yield return new PawnPromotion(from, to, PieceType.Rook);
+            yield return new PawnPromotion(from, to, PieceType.Queen);
+        }
+
+        public IEnumerable<Move> ForwardMoves( Position fromPos, Board board )
         {
             Position oneMovePosition = fromPos + forward;
 
-            if(CanMoveTo(oneMovePosition, board))
+            if (CanMoveTo(oneMovePosition, board))
             {
-                yield return new NormalMove(fromPos, oneMovePosition);
-            }
+                // Check if the pawn reaches promotion square
+                if (oneMovePosition.Row == 0 || oneMovePosition.Row == 7)
+                {
+                    // generate the 4 promotion moves
+                    foreach (Move promMove in PromotionMoves(fromPos, oneMovePosition))
+                    {
+                        yield return promMove;
+                    }
+                }
+                else
+                {
+                    yield return new NormalMove(fromPos, oneMovePosition);
+                }
 
-            // For the 1st move of each pawn; en pessant later
-            Position twoMovesPosition = oneMovePosition + forward;
+                // For the 1st move of each pawn; en pessant later
+                Position twoMovesPosition = oneMovePosition + forward;
 
-            if(!HasMoved && CanMoveTo(twoMovesPosition, board))
-            {
-                yield return new NormalMove(fromPos, twoMovesPosition);
+                if (!HasMoved && CanMoveTo(twoMovesPosition, board))
+                {
+                    yield return new NormalMove(fromPos, twoMovesPosition);
+                }
             }
         }
 
@@ -66,9 +87,22 @@ namespace ChessLogic
             {
                 Position to = fromPos + forward + dir;
 
+                // If a pawn can capture a piece
                 if(CanCaptureAt(to, board))
                 {
-                    yield return new NormalMove(fromPos, to);
+                    // Check if it reaches promotion square
+                    if (to.Row == 0 || to.Row == 7)
+                    {
+                        // if yes we return the promotin moves
+                        foreach (Move promMove in PromotionMoves(fromPos, to))
+                        {
+                            yield return promMove;
+                        }
+                    }
+                    else
+                    {
+                        yield return new NormalMove(fromPos, to);
+                    }
                 }
             }
         }
