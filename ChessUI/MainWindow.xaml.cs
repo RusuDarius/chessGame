@@ -101,8 +101,35 @@ namespace ChessUI
 
             if(moveChache.TryGetValue(pos, out Move move))
             {
-                HandleMove(move);
+                // If chosen move is a promotion move then we hadle it specifically (because there are 4 moves possible but only 1 is going to be cached)
+                if(move.Type == MoveType.PawnPromotion)
+                {
+                    HandlePromotion(move.FromPos, move.ToPos);
+                }
+                else
+                {
+                    HandleMove(move);
+                }
             }
+        }
+
+        private void HandlePromotion(Position from, Position to)
+        {
+            // Show the pawn at the "to" position
+            pieceImages[to.Row, to.Column].Source = Images.GetImage(gameState.CurrentPlayer, PieceType.Pawn);
+            pieceImages[from.Row, from.Column].Source = null;
+
+            // Display promotion menu on the screen
+            PromotionMenu promMenu = new PromotionMenu(gameState.CurrentPlayer);
+            MenuContainer.Content = promMenu;
+
+            // Register PieceSelected event handler
+            promMenu.PieceSelected += type =>
+            {
+                MenuContainer.Content = null;
+                Move promMove = new PawnPromotion(from, to, type);
+                HandleMove(promMove);
+            };
         }
 
         private void HandleMove(Move move)
@@ -123,7 +150,7 @@ namespace ChessUI
             double squareSize = BoardGrid.ActualWidth / 8;
             int row = (int)(point.Y / squareSize);
             int col = (int)(point.X / squareSize);
-            return new Position(row, col); 
+            return new Position(row, col);
         }
 
         // Cache for legal moves a piece can make
