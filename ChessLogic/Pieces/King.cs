@@ -23,6 +23,54 @@ namespace ChessLogic
             Color = color;
         }
 
+        // For validating that the rook didn't move previously
+        // Don't check for right color/piece because we invoke this method on the original pos of a rook
+        private static bool IsUnmovedRook(Position pos, Board board)
+        {
+            if(board.IsEmpty(pos))
+            {
+                return false;
+            }
+
+            Piece piece = board[pos];
+            return (piece.Type == PieceType.Rook && !piece.HasMoved);
+        }
+
+        // Checks if squares are empty (for castling)
+        private static bool AllEmpty(IEnumerable<Position> positions, Board board)
+        {
+            return positions.All(pos => board.IsEmpty(pos));
+        }
+
+        // If king has moved then false
+        // Create pos where rook must be & positions array for pieces between king & rook
+        // True if rook didn't move & betweenPositions are empty
+        private bool CanCastleKingSide(Position kingPos, Board board)
+        {
+            if(HasMoved)
+            {
+                return false;
+            }
+
+            Position rookPos = new Position(kingPos.Row, 7);
+            Position[] betweenPositions = new Position[] { new(kingPos.Row, 5), new(kingPos.Row, 6) };
+
+            return IsUnmovedRook(rookPos, board) && AllEmpty(betweenPositions, board);
+        }
+
+        private bool CanCastleQueenSide(Position kingPos, Board board)
+        {
+            if(HasMoved)
+            {
+                return false;
+            }
+
+            Position rookPos = new Position(kingPos.Row, 0);
+            Position[] betweenPositions = new Position[] { new(kingPos.Row, 1), new(kingPos.Row, 2), new(kingPos.Row, 3) };
+
+            return IsUnmovedRook(rookPos, board) && AllEmpty(betweenPositions, board);
+        }
+
         public override Piece Copy()
         {
             King copy = new King(Color);
@@ -53,6 +101,17 @@ namespace ChessLogic
             foreach(Position to in MovePositions(fromPos, board))
             {
                 yield return new NormalMove(fromPos, to);
+            }
+
+            // Add castle moves to GetMoves to generate them if possible
+            if(CanCastleKingSide(fromPos, board))
+            {
+                yield return new Castle(MoveType.CastleKingSide, fromPos);
+            }
+
+            if(CanCastleQueenSide(fromPos, board))
+            {
+                yield return new Castle(MoveType.CastleQueenSide, fromPos);
             }
         }
 
