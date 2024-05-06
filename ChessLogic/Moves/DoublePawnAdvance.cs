@@ -23,7 +23,7 @@
         {
             Player player = board[FromPos].Color;
             board.setPawnSkippedPosition(player, skippedPos);
-            new NormalMove(FromPos, ToPos);
+            new NormalMove(FromPos, ToPos).Execute(board);
         }
     }
 }
