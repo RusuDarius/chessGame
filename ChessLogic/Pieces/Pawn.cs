@@ -76,7 +76,7 @@ namespace ChessLogic
 
                 if (!HasMoved && CanMoveTo(twoMovesPosition, board))
                 {
-                    yield return new NormalMove(fromPos, twoMovesPosition);
+                    yield return new DoublePawnAdvance(fromPos, twoMovesPosition);
                 }
             }
         }
@@ -87,8 +87,12 @@ namespace ChessLogic
             {
                 Position to = fromPos + forward + dir;
 
+                if(to == board.GetPawnSkippedPosition(Color.Opponent()))
+                {
+                    yield return new EnPessant(fromPos, to);
+                }
                 // If a pawn can capture a piece
-                if(CanCaptureAt(to, board))
+                else if (CanCaptureAt(to, board))
                 {
                     // Check if it reaches promotion square
                     if (to.Row == 0 || to.Row == 7)
