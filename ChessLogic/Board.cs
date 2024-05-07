@@ -4,30 +4,26 @@ namespace ChessLogic
     {
         private readonly Piece[,] pieces = new Piece[8, 8];
 
-        // Stores skipped positions for pawns when en-pessant is happening
-        // when players move a pawn 2 squares, will store the skipped pos here
         private readonly Dictionary<Player, Position> pawnSkipPositions = new Dictionary<Player, Position>
         {
             {Player.White, null },
             {Player.Black, null }
         };
 
-        // Access the board like a 2D array
+        // access the board like a 2D array
         public Piece this[int row, int col]
         {
             get { return pieces[row, col]; }
             set { pieces[row, col] = value; }
         }
 
-        // Position object as index; unpacks given position and calls first indexer
-        // Get & set the piece on a square either by row + column or by position obj
+        // to use position object as index; unpacks given position and calls first indexer
         public Piece this[Position pos]
         {
             get { return this[pos.Row, pos.Column]; }
             set { this[pos.Row, pos.Column] = value; }
         }
 
-        // the pos of the skipped square
         public Position GetPawnSkippedPosition(Player player)
         {
             return pawnSkipPositions[player];
@@ -83,7 +79,7 @@ namespace ChessLogic
             return this[pos] == null;
         }
 
-        // For non-empty positions
+        // Check for non-empty positions
         public IEnumerable<Position> PiecePositions()
         {
             for(int r=0; r<8; r++)

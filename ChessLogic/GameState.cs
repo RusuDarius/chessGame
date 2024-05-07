@@ -6,7 +6,7 @@ namespace ChessLogic
         public Player CurrentPlayer { get; private set; }
         public Result Result { get; private set; } = null;
 
-        // player + board as params because white starts first
+        // white always starts first
         public GameState(Player player, Board board)
         {
             CurrentPlayer = player;
@@ -23,7 +23,6 @@ namespace ChessLogic
 
             Piece piece = Board[pos];
 
-            // Store all the moves possible
             IEnumerable<Move> moveCandidates =  piece.GetMoves(pos, Board);
             return moveCandidates.Where(move => move.IsLegal(Board));
         }
