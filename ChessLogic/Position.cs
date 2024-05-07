@@ -11,15 +11,7 @@ namespace ChessLogic
             Column = column;
         }
 
-        public Player SquareColor()
-        {
-            if ((Row + Column) % 2 == 0)
-            {
-                return Player.White;
-            }
-            return Player.Black;
-        }
-
+        // for using Position as key in dictionaries
         public override bool Equals(object? obj)
         {
             return obj is Position position && Row == position.Row && Column == position.Column;

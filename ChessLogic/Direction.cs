@@ -20,7 +20,6 @@ namespace ChessLogic
             ColumnDelta = columnDelta;
         }
 
-        //Posibility to add 2 directions together
         public static Direction operator +(Direction dir1, Direction dir2)
         {
             return new Direction(
@@ -29,7 +28,6 @@ namespace ChessLogic
             );
         }
 
-        // To scale a direction
         public static Direction operator *(int scalar, Direction dir)
         {
             return new Direction(scalar * dir.RowDelta, scalar * dir.ColumnDelta);
