@@ -53,7 +53,7 @@ namespace ChessLogic
             }
 
             Position rookPos = new Position(kingPos.Row, 7);
-            Position[] betweenPositions = new Position[] { new(kingPos.Row, 5), new(kingPos.Row, 6) };
+            Position[] betweenPositions = [new(kingPos.Row, 5), new(kingPos.Row, 6)];
 
             return IsUnmovedRook(rookPos, board) && AllEmpty(betweenPositions, board);
         }

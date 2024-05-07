@@ -9,7 +9,7 @@ namespace ChessLogic
 
         public abstract IEnumerable<Move> GetMoves( Position fromPos, Board board );
 
-        // for pieces that can move as much as possible (Rook, Bishop, Queen)
+        // for Rook, Bishop, Queen
         protected IEnumerable<Position> MovePositionsInDir( Position fromPos, Board board, Direction dir )
         {
             for(Position pos = fromPos + dir; Board.IsInside(pos); pos+=dir)
@@ -31,7 +31,7 @@ namespace ChessLogic
             }
         }
 
-        // Made a collection of reachable positions in given directions
+        // collect reachable positions in all given directions
         protected IEnumerable<Position> MovePositioninDirs(Position from,  Board board, Direction[] dirs) 
         { 
             return dirs.SelectMany(dir => MovePositionsInDir(from, board, dir));
