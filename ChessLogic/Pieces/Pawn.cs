@@ -71,7 +71,7 @@ namespace ChessLogic
                     yield return new NormalMove(fromPos, oneMovePosition);
                 }
 
-                // For the 1st move of each pawn; en pessant later
+                // 1st move & en pessant
                 Position twoMovesPosition = oneMovePosition + forward;
 
                 if (!HasMoved && CanMoveTo(twoMovesPosition, board))
